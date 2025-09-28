@@ -1,2 +1,0 @@
-#e1(28Sep2025:23:50:56): source ./xcelium.d/env.d/env.history.28Sep2025_23_50_56
-s1(28Sep2025:23:50:56):  xrun -access +rwc -sv -linedebug -input run.tcl axi_ram.v controller.v Control_Unit.v DPRAM_IFM.v DPRAM.v FIFO_MAXPOOL_array.v FIFO.v Functional_Unit.v ifm_addr_controller.v ifm_FIFO_array.v ifm_FIFO.v MAXPOOL_FIFO_array.v MAXPOOL.v mult_fixpoint.v ofm_read_addr_controller.v ofm_write_addr_controller_1.v ofm_write_addr_controller_2.v PE_array.v PE_MAXPOOL_array.v PE.v systolic_array.v tb.v TOP.v wgt_addr_controller.v wgt_FIFO_array.v wrapper_ip.v AXI_master.sv FIFO.sv 
