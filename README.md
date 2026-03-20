@@ -1,5 +1,6 @@
 # Yolo_v3_Tiny_AXI
 Author:  **Nguyen Van Luu** - nluu1784@gmail.com
+**Nguyen Thi Thuy Linh** - linh041203@gmail.com
   
   Name of Institute: **School of Electrical and Electronic Engineering (SEEE)-HUST**    
 
