@@ -13,9 +13,9 @@ Author:
 # ARCHITECTURE OF SYSTEM
 ![YOLO Tiny Architecture](images/block_diagram.png)
 # Block design on Vivado
-![YOLO Tiny Architecture](images/VIVADO.png)
+![YOLO Tiny Architecture](images/VIVADO.jpg)
 # Performance & Power consumption and hardware ultilization
 ![YOLO Tiny Architecture](images/image.png)
 # Layout of chip on ZCU104
-![YOLO Tiny Architecture](images/layout.png)
+![YOLO Tiny Architecture](images/layout.jpg)
 
