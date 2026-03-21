@@ -1,0 +1,12 @@
+//
+// File created by:  xrun
+// Do not modify this file
+//
+-access
++rwc
+-sv
+-linedebug
+-input
+run.tcl
+-f
+listfile.f
