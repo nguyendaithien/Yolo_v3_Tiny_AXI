@@ -32,7 +32,14 @@ First, unzip the parameter file located in ./data/wgt.zip:
 cd ./data
 unzip wgt.zip
 ```
-We highly recommend to use Cadence tool for running simulation, if you use other tool, you should edit file makefile in folder run to math with your tool.
+We highly recommend to use Cadence tool for running simulation, if you use other tool, you should edit file makefile in folder ./run to math with your tool.
+```sh
+Edit this line if you don't use Xcelium of Cadence:
+all:
+    xrun -access +rwc -sv -linedebug \
+             -input "run.tcl" \
+                   -f listfile.f
+```
 ```sh
 cd ./run
 make all
