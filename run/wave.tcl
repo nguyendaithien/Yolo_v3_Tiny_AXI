@@ -1,5 +1,4 @@
 database -open waves -shm
-probe -create -all -depth all -database waves
+probe -create -all -depth all
 run
-exit
 

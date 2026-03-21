@@ -17,7 +17,7 @@ module PE #(
 );
 
 	reg  [DATA_WIDTH*2 - 1 : 0] result ;
-	(* use_dsp = "yes" *) wire [DATA_WIDTH*2 - 1 : 0] mult   ;
+	wire [DATA_WIDTH*2 - 1 : 0] mult   ;
 	wire [DATA_WIDTH   - 1 : 0] quantized_result = {result[DATA_WIDTH*2 - 1], result[DATA_WIDTH - 2 + Q : Q]};
 
 	mult_fixpoint #(.DATA_WIDTH(DATA_WIDTH)) mult_fp (

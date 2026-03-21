@@ -24,7 +24,7 @@ module DPRAM #(
     input      [8 : 0]                    ofm_size
 );
 
-    (* ram_style = "block" *)  reg [DATA_WIDTH - 1 : 0] mem     [0 : RAM_SIZE      - 1] ;
+    reg [DATA_WIDTH - 1 : 0] mem     [0 : RAM_SIZE      - 1] ;
     reg [DATA_WIDTH - 1 : 0] data_in [0 : SYSTOLIC_SIZE - 1] ;
 
     integer i;

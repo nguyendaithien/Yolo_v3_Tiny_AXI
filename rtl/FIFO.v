@@ -15,7 +15,7 @@ module FIFO #(
 	output reg [DATA_WIDTH - 1 : 0] data_out_fifo                
 );
 
-(* ram_style = "block" *) 	reg [DATA_WIDTH        - 1 : 0] fifo_data [0 : FIFO_SIZE - 1] ;
+	reg [DATA_WIDTH        - 1 : 0] fifo_data [0 : FIFO_SIZE - 1] ;
 	reg [$clog2(FIFO_SIZE) - 1 : 0] rd_ptr                        ;
 	reg [$clog2(FIFO_SIZE) - 1 : 0] wr_ptr                        ;
 

@@ -24,7 +24,6 @@ module Control_Unit #(
     output reg                                  maxpool_mode       ,
     output reg [1 : 0]                          maxpool_stride     ,
     output reg                                  upsample_mode      ,
-		output reg [7:0 ]                           num_tile_filter  , // example: num filter = 32 => count tile filter = 2
 
     output reg [$clog2(OFM_RAM_SIZE_1) - 1 : 0] start_write_addr_1 ,
     output reg [$clog2(OFM_RAM_SIZE_1) - 1 : 0] start_read_addr_1  ,
@@ -105,7 +104,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd58      ;
                 num_load_filter    = 7'd1        ;
                 num_tiling         = 14'd10816   ;
-								num_tile_filter    = 8'd1        ; 
             end 
             4'd2: begin
                 ifm_size           = 9'd208      ;
@@ -133,7 +131,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd175     ;
                 num_load_filter    = 7'd2        ;
                 num_tiling         = 14'd2704    ;
-								num_tile_filter    = 8'd2        ; 
             end 
             4'd3: begin
                 ifm_size           = 9'd104      ;
@@ -161,7 +158,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd319     ;
                 num_load_filter    = 7'd4        ;
                 num_tiling         = 14'd728     ;
-								num_tile_filter    = 8'd4        ; 
             end 
             4'd4: begin
                 ifm_size           = 9'd52       ;
@@ -189,7 +185,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd607     ;
                 num_load_filter    = 7'd8        ;
                 num_tiling         = 14'd208     ;
-								num_tile_filter    = 8'd8        ; 
             end 
             4'd5: begin
                 ifm_size           = 9'd26       ;
@@ -217,7 +212,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd1183    ;
                 num_load_filter    = 7'd16       ;
                 num_tiling         = 14'd52      ;
-								num_tile_filter    = 8'd16       ; 
             end 
             4'd6: begin
                 ifm_size           = 9'd13       ;
@@ -245,7 +239,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd2335    ;
                 num_load_filter    = 7'd32       ;
                 num_tiling         = 14'd13      ;      
-								num_tile_filter    = 8'd32       ; 
             end 
             4'd7: begin
                 ifm_size           = 9'd13       ;
@@ -273,7 +266,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd4639    ;
                 num_load_filter    = 7'd64       ;
                 num_tiling         = 14'd13      ;             
-								num_tile_filter    = 8'd64       ; 
             end 
             4'd8: begin
                 ifm_size           = 9'd13       ;
@@ -301,7 +293,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd1055    ;
                 num_load_filter    = 7'd16       ;
                 num_tiling         = 14'd13      ;                 
-								num_tile_filter    = 8'd16       ; 
             end 
             4'd9: begin
                 ifm_size           = 9'd13       ;
@@ -329,7 +320,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd2335    ;
                 num_load_filter    = 7'd32       ;
                 num_tiling         = 14'd13      ;           
-								num_tile_filter    = 8'd32       ; 
             end 
             4'd10: begin
                 ifm_size           = 9'd13       ;
@@ -357,7 +347,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd543     ;
                 num_load_filter    = 7'd16       ;
                 num_tiling         = 14'd13      ;              
-								num_tile_filter    = 8'd16       ; 
             end 
             4'd11: begin
                 ifm_size           = 9'd13       ;
@@ -385,7 +374,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd287     ;
                 num_load_filter    = 7'd8        ;
                 num_tiling         = 14'd13      ;               
-								num_tile_filter    = 8'd8        ; 
             end 
             4'd12: begin
                 ifm_size           = 9'd26       ;
@@ -413,7 +401,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd3487    ;
                 num_load_filter    = 7'd16       ;
                 num_tiling         = 14'd52      ;
-								num_tile_filter    = 8'd16       ; 
             end 
             4'd13: begin
                 ifm_size           = 9'd26       ;
@@ -441,7 +428,6 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd287     ;
                 num_load_filter    = 7'd16       ;
                 num_tiling         = 14'd52      ;             
-								num_tile_filter    = 8'd16       ; 
             end 
             default: begin
                 ifm_size           = 9'd0        ;
@@ -469,8 +455,7 @@ module Control_Unit #(
                 num_cycle_compute  = 13'd0       ;
                 num_load_filter    = 7'd0        ;
                 num_tiling         = 14'd0       ;         
-								num_tile_filter    = 8'd0        ; 
-            end 
+            end
         endcase
     end
 

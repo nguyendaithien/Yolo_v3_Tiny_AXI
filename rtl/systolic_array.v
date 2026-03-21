@@ -18,105 +18,179 @@
   parameter NUM_LAYER         = 1       ,
 
   parameter ID_WIDTH          = 4 ,
-  parameter ADDR_WIDTH        = 32,
+  parameter ADDR_WIDTH        = 16,
   parameter LEN_WIDTH         = 8 ,
 
-  parameter ADDR_WIDTH_OFM    = 32 ,
-  parameter BUFFER_ADDR_WIDTH =  19,
-  parameter AXI_WIDTH         =  128,
 
+		// User parameters ends
+		// Do not modify the parameters beyond this line
 
-		parameter  C_M_TARGET_SLAVE_BASE_ADDR  = 32'h40000000,
-		parameter integer C_M_AXI_BURST_LEN    = 256,
-		parameter integer C_M_AXI_ID_WIDTH     = 1,
-		parameter integer C_M_AXI_ADDR_WIDTH   = 32,
-		parameter integer C_M_AXI_DATA_WIDTH   = 128,
-		parameter integer C_M_AXI_AWUSER_WIDTH = 0,
-		parameter integer C_M_AXI_ARUSER_WIDTH = 0,
-		parameter integer C_M_AXI_WUSER_WIDTH  = 0,
-		parameter integer C_M_AXI_RUSER_WIDTH  = 0,
-		parameter integer C_M_AXI_BUSER_WIDTH  = 0
+		// Base address of targeted slave
+		parameter  C_M_TARGET_SLAVE_BASE_ADDR	= 32'h40000000,
+		// Burst Length. Supports 1, 2, 4, 8, 16, 32, 64, 128, 256 burst lengths
+		parameter integer C_M_AXI_BURST_LEN	= 256,
+		// Thread ID Width
+		parameter integer C_M_AXI_ID_WIDTH	= 1,
+		// Width of Address Bus
+		parameter integer C_M_AXI_ADDR_WIDTH	= 32,
+		// Width of Data Bus
+		parameter integer C_M_AXI_DATA_WIDTH	= 128,
+		// Width of User Write Address Bus
+		parameter integer C_M_AXI_AWUSER_WIDTH	= 0,
+		// Width of User Read Address Bus
+		parameter integer C_M_AXI_ARUSER_WIDTH	= 0,
+		// Width of User Write Data Bus
+		parameter integer C_M_AXI_WUSER_WIDTH	= 0,
+		// Width of User Read Data Bus
+		parameter integer C_M_AXI_RUSER_WIDTH	= 0,
+		// Width of User Response Bus
+		parameter integer C_M_AXI_BUSER_WIDTH	= 0
 	)
 	(
-		input wire                                  INIT_AXI_TXN  , // start transacsison
-		output wire                                 TXN_DONE      ,
-		output reg                                  ERROR         ,
-		input wire                                  M_AXI_ACLK    ,
-		input wire                                  M_AXI_ARESETN ,
-		output wire [C_M_AXI_ID_WIDTH-1 : 0     ]   M_AXI_AWID    ,
-		output wire [C_M_AXI_ADDR_WIDTH-1 : 0   ]   M_AXI_AWADDR  ,
-		output wire [7 : 0                      ]   M_AXI_AWLEN   ,
-		output wire [2 : 0                      ]   M_AXI_AWSIZE  ,
-		output wire [1 : 0                      ]   M_AXI_AWBURST ,
-		output wire                                 M_AXI_AWLOCK  ,
-		output wire [3 : 0                        ] M_AXI_AWCACHE ,
-		output wire [2 : 0                        ] M_AXI_AWPROT  ,
-		output wire [3 : 0                        ] M_AXI_AWQOS   ,
-		output wire [C_M_AXI_AWUSER_WIDTH-1 : 0   ] M_AXI_AWUSER  ,
-		output wire                                 M_AXI_AWVALID ,
-		input wire                                  M_AXI_AWREADY ,
-		output wire [C_M_AXI_DATA_WIDTH-1 : 0     ] M_AXI_WDATA   ,
-		output wire [C_M_AXI_DATA_WIDTH/8-1 : 0   ] M_AXI_WSTRB   ,
-		output wire                                 M_AXI_WLAST   ,
-		output wire [C_M_AXI_WUSER_WIDTH-1 : 0    ] M_AXI_WUSER   ,
-		output wire                                 M_AXI_WVALID  ,
-		input wire                                  M_AXI_WREADY  ,
-		input wire [C_M_AXI_ID_WIDTH-1 : 0        ] M_AXI_BID     ,
-		input wire [1 : 0                         ] M_AXI_BRESP   ,
-		input wire [C_M_AXI_BUSER_WIDTH-1 : 0     ] M_AXI_BUSER   ,
-		input wire                                  M_AXI_BVALID  ,
-		output wire                                 M_AXI_BREADY  ,
-		output wire [C_M_AXI_ID_WIDTH-1 : 0       ] M_AXI_ARID    ,
-		output wire [C_M_AXI_ADDR_WIDTH-1 : 0     ] M_AXI_ARADDR  ,
-		output wire [7 : 0                        ] M_AXI_ARLEN   ,
-		output wire [2 : 0                        ] M_AXI_ARSIZE  ,
-		output wire [1 : 0                        ] M_AXI_ARBURST ,
-		output wire                                 M_AXI_ARLOCK  ,
-		output wire [3 : 0                        ] M_AXI_ARCACHE ,
-		output wire [2 : 0                        ] M_AXI_ARPROT  ,
-		output wire [3 : 0                        ] M_AXI_ARQOS   ,
-		output wire [C_M_AXI_ARUSER_WIDTH-1 : 0   ] M_AXI_ARUSER  ,
-		output wire                                 M_AXI_ARVALID ,
-		input wire                                  M_AXI_ARREADY ,
-		input wire [C_M_AXI_ID_WIDTH-1 : 0        ] M_AXI_RID     ,
-		input wire [C_M_AXI_DATA_WIDTH-1 : 0      ] M_AXI_RDATA   ,
-		input wire [1 : 0                         ] M_AXI_RRESP   ,
-		input wire                                  M_AXI_RLAST   ,
-		input wire [C_M_AXI_RUSER_WIDTH-1 : 0     ] M_AXI_RUSER   ,
-		input wire                                  M_AXI_RVALID  ,
-		output wire                                 M_AXI_RREADY  ,
+		// Users to add ports here
 
-	  input wire start_read,
-    output wire                                   ofm_write_en  , 
-	 output wire done_wr_layer
+		// User ports ends
+		// Do not modify the ports beyond this line
 
+		// Initiate AXI transactions
+		input wire  INIT_AXI_TXN, // start transacsison
+		// Asserts when transaction is complete
+		output wire  TXN_DONE,
+		// Asserts when ERROR is detected
+		output reg  ERROR,
+		// Global Clock Signal.
+		input wire  M_AXI_ACLK,
+		// Global Reset Singal. This Signal is Active Low
+		input wire  M_AXI_ARESETN,
+		// Master Interface Write Address ID
+		output wire [C_M_AXI_ID_WIDTH-1 : 0] M_AXI_AWID,
+		// Master Interface Write Address
+		output wire [C_M_AXI_ADDR_WIDTH-1 : 0] M_AXI_AWADDR,
+		// Burst length. The burst length gives the exact number of transfers in a burst
+		output wire [7 : 0] M_AXI_AWLEN,
+		// Burst size. This signal indicates the size of each transfer in the burst
+		output wire [2 : 0] M_AXI_AWSIZE,
+		// Burst type. The burst type and the size information, 
+    // determine how the address for each transfer within the burst is calculated.
+		output wire [1 : 0] M_AXI_AWBURST,
+		// Lock type. Provides additional information about the
+    // atomic characteristics of the transfer.
+		output wire  M_AXI_AWLOCK,
+		// Memory type. This signal indicates how transactions
+    // are required to progress through a system.
+		output wire [3 : 0] M_AXI_AWCACHE,
+		// Protection type. This signal indicates the privilege
+    // and security level of the transaction, and whether
+    // the transaction is a data access or an instruction access.
+		output wire [2 : 0] M_AXI_AWPROT,
+		// Quality of Service, QoS identifier sent for each write transaction.
+		output wire [3 : 0] M_AXI_AWQOS,
+		// Optional User-defined signal in the write address channel.
+		output wire [C_M_AXI_AWUSER_WIDTH-1 : 0] M_AXI_AWUSER,
+		// Write address valid. This signal indicates that
+    // the channel is signaling valid write address and control information.
+		output wire  M_AXI_AWVALID,
+		// Write address ready. This signal indicates that
+    // the slave is ready to accept an address and associated control signals
+		input wire  M_AXI_AWREADY,
+		// Master Interface Write Data.
+		output wire [C_M_AXI_DATA_WIDTH-1 : 0] M_AXI_WDATA,
+		// Write strobes. This signal indicates which byte
+    // lanes hold valid data. There is one write strobe
+    // bit for each eight bits of the write data bus.
+		output wire [C_M_AXI_DATA_WIDTH/8-1 : 0] M_AXI_WSTRB,
+		// Write last. This signal indicates the last transfer in a write burst.
+		output wire  M_AXI_WLAST,
+		// Optional User-defined signal in the write data channel.
+		output wire [C_M_AXI_WUSER_WIDTH-1 : 0] M_AXI_WUSER,
+		// Write valid. This signal indicates that valid write
+    // data and strobes are available
+		output wire  M_AXI_WVALID,
+		// Write ready. This signal indicates that the slave
+    // can accept the write data.
+		input wire  M_AXI_WREADY,
+		// Master Interface Write Response.
+		input wire [C_M_AXI_ID_WIDTH-1 : 0] M_AXI_BID,
+		// Write response. This signal indicates the status of the write transaction.
+		input wire [1 : 0] M_AXI_BRESP,
+		// Optional User-defined signal in the write response channel
+		input wire [C_M_AXI_BUSER_WIDTH-1 : 0] M_AXI_BUSER,
+		// Write response valid. This signal indicates that the
+    // channel is signaling a valid write response.
+		input wire  M_AXI_BVALID,
+		// Response ready. This signal indicates that the master
+    // can accept a write response.
+		output wire  M_AXI_BREADY,
+		// Master Interface Read Address.
+		output wire [C_M_AXI_ID_WIDTH-1 : 0] M_AXI_ARID,
+		// Read address. This signal indicates the initial
+    // address of a read burst transaction.
+		output wire [C_M_AXI_ADDR_WIDTH-1 : 0] M_AXI_ARADDR,
+		// Burst length. The burst length gives the exact number of transfers in a burst
+		output wire [7 : 0] M_AXI_ARLEN,
+		// Burst size. This signal indicates the size of each transfer in the burst
+		output wire [2 : 0] M_AXI_ARSIZE,
+		// Burst type. The burst type and the size information, 
+    // determine how the address for each transfer within the burst is calculated.
+		output wire [1 : 0] M_AXI_ARBURST,
+		// Lock type. Provides additional information about the
+    // atomic characteristics of the transfer.
+		output wire  M_AXI_ARLOCK,
+		// Memory type. This signal indicates how transactions
+    // are required to progress through a system.
+		output wire [3 : 0] M_AXI_ARCACHE,
+		// Protection type. This signal indicates the privilege
+    // and security level of the transaction, and whether
+    // the transaction is a data access or an instruction access.
+		output wire [2 : 0] M_AXI_ARPROT,
+		// Quality of Service, QoS identifier sent for each read transaction
+		output wire [3 : 0] M_AXI_ARQOS,
+		// Optional User-defined signal in the read address channel.
+		output wire [C_M_AXI_ARUSER_WIDTH-1 : 0] M_AXI_ARUSER,
+		// Write address valid. This signal indicates that
+    // the channel is signaling valid read address and control information
+		output wire  M_AXI_ARVALID,
+		// Read address ready. This signal indicates that
+    // the slave is ready to accept an address and associated control signals
+		input wire  M_AXI_ARREADY,
+		// Read ID tag. This signal is the identification tag
+    // for the read data group of signals generated by the slave.
+		input wire [C_M_AXI_ID_WIDTH-1 : 0] M_AXI_RID,
+		// Master Read Data
+		input wire [C_M_AXI_DATA_WIDTH-1 : 0] M_AXI_RDATA,
+		// Read response. This signal indicates the status of the read transfer
+		input wire [1 : 0] M_AXI_RRESP,
+		// Read last. This signal indicates the last transfer in a read burst
+		input wire  M_AXI_RLAST,
+		// Optional User-defined signal in the read address channel.
+		input wire [C_M_AXI_RUSER_WIDTH-1 : 0] M_AXI_RUSER,
+		// Read valid. This signal indicates that the channel
+    // is signaling the required read data.
+		input wire  M_AXI_RVALID,
+		// Read ready. This signal indicates that the master can
+    // accept the read data and response information.
+		output wire  M_AXI_RREADY                 , 
+    input  wire                   start       ,
+    input  wire [INOUT_WIDTH-1:0] ifm_data_in ,
+    output wire [18 : 0]          ifm_addr_a  ,
+    output wire                   ifm_read_en ,
+    output wire                   upsample_mode         ,
+    output wire                   done
 	);
 		localparam DATA_WIDTH_TEST = 128;
 		wire done_CNN;
-    wire [ INOUT_WIDTH-1:0]                ofm_data_write; 
-
-	wire [AXI_WIDTH-1:0]      rdata        ;
-	wire [BUFFER_ADDR_WIDTH - 1:0] ADDRB;
-	wire WR_EN;
-	wire start_CNN; // to systolic
-	wire [10:0] num_filter;
-	wire ifm_write_en;
-	wire [INOUT_WIDTH - 1:0] ifm_data_in;
-		wire [8:0]                             ifm_size      ;
-  wire [BUFFER_ADDR_WIDTH-1 : 0]                          ifm_addr_a  ;
 	
-		wire end_read_ifm;
 
     wire [3 : 0] count_layer        ;
+    wire [8 : 0] ifm_size           ;
     wire [8 : 0] ofm_size_conv      ;
     wire [8 : 0] ofm_size           ;
     wire [8 : 0] ofm_size_ofm_ram_2 ;
     wire [10: 0] ifm_channel        ;
     wire [1 : 0] kernel_size        ;
+    wire [10: 0] num_filter         ;
     wire         maxpool_mode       ;
     wire [1 : 0] maxpool_stride     ;
-
-		wire [8:0] ofm_size_pack = (count_layer == 6) ?  ((ofm_size + 8 - 1) / 8)/2 : ((ofm_size + 8 - 1) / 8);
 
     wire [$clog2(OFM_RAM_SIZE_1) - 1 : 0] start_write_addr_1 ;
     wire [$clog2(OFM_RAM_SIZE_1) - 1 : 0] start_read_addr_1  ;
@@ -138,9 +212,6 @@
 
 		wire start_layer;
 
-		wire busy_r;
-		wire busy_w;
-
 Functional_Unit #(
     .SYSTOLIC_SIZE     ( SYSTOLIC_SIZE     ) ,
     .DATA_WIDTH        ( DATA_WIDTH        ) ,
@@ -156,7 +227,7 @@ Functional_Unit #(
     .clk                ( M_AXI_ACLK         ) ,
     .rst_n              ( M_AXI_ARESETN      ) ,
     .start              ( start_layer        ) ,
-    .done               ( done_compute_layer               ) ,
+    .done               ( done               ) ,
 
     //Layer config
     .count_layer        ( count_layer        ) ,
@@ -190,23 +261,18 @@ Functional_Unit #(
 	// to ifm bram
     .ifm_read_en        (ifm_read_en         ) ,   
     .ifm_addr_a         (ifm_addr_a          ) ,
-  	.ifm_data_in        (ifm_data_in         ) ,
-
-    .write_out_ofm_en_1 (ofm_write_en   ), 
-     .ofm_data_out_1     (ofm_data_write )
+  	.ifm_data_in        (ifm_data_in         )                                              
  
 );
 
 Control_Unit #(.NUM_LAYER (NUM_LAYER), .OFM_RAM_SIZE_1 (OFM_RAM_SIZE_1), .OFM_RAM_SIZE_2 (OFM_RAM_SIZE_2)) C_U (
     .clk                ( M_AXI_ACLK         ) ,
     .rst_n              ( M_AXI_ARESETN      ) ,
-    .start_CNN          ( start_CNN          ) ,
-    //.done_layer         ( done               ) , 
-  	.done_layer         ( end_read_ifm       ) , 
+    .start_CNN          ( start              ) ,
+    .done_layer         ( done               ) ,
     .start_layer        ( start_layer        ) ,
-
-
     .done_CNN           ( done_CNN           ) ,
+    
     //Layer config
     .count_layer        ( count_layer        ) ,
     .ifm_size           ( ifm_size           ) ,
@@ -236,100 +302,6 @@ Control_Unit #(.NUM_LAYER (NUM_LAYER), .OFM_RAM_SIZE_1 (OFM_RAM_SIZE_1), .OFM_RA
   	.num_cycle_compute  ( num_cycle_compute  ) ,
   	.num_load_filter    ( num_load_filter    ) ,
   	.num_tiling         ( num_tiling         )
-);
-
-  AXI_MASTER_IF #    (
-  .ADDR_WIDTH        ( ADDR_WIDTH                ) ,
-	.SYSTOLIC_SIZE    (SYSTOLIC_SIZE     ),
-  .ADDR_WIDTH_OFM    ( ADDR_WIDTH_OFM     ) ,
-  .BUFFER_ADDR_WIDTH ( BUFFER_ADDR_WIDTH ) ,
-  .DATA_WIDTH        ( DATA_WIDTH        ) ,
-  .ID_WIDTH          ( ID_WIDTH          ) ,
-  .INOUT_WIDTH       ( INOUT_WIDTH       ) ,
-	.NUM_LAYER         ( NUM_LAYER         ) ,
-  .AXI_WIDTH         ( AXI_WIDTH         ) ,
-  .LEN_WIDTH         ( LEN_WIDTH         )
-  ) u_master         (
-    .ACLK      ( M_AXI_ACLK             ) ,
-    .ARESETN   ( M_AXI_ARESETN           ) , 
-    .WDATA_IN  ( ofm_data_write  ) ,
-    .RDATA_OUT ( rdata   ) ,  // to write IFM buffer
-    .BUSY_R    ( busy_r  ) , // out 
-    .BUSY_W    ( busy_w  ) ,  // out
-
-    // Write address channel
-    .M_AXI_AWID           ( M_AXI_AWID        ) , // to SLAVE 
-    .M_AXI_AWADDR         ( M_AXI_AWADDR      ) , // to SLAVE
-    .M_AXI_AWLEN          ( M_AXI_AWLEN       ) , // to SLAVE
-    .M_AXI_AWSIZE         ( M_AXI_AWSIZE      ) , // to SLAVE
-    .M_AXI_AWBURST        ( M_AXI_AWBURST     ) , // to SLAVE
-    .M_AXI_AWVALID        ( M_AXI_AWVALID     ) , // to SLAVE
-    .M_AXI_AWREADY        ( M_AXI_AWREADY     ) , // to SLAVE
-
-    // Write data channel
-    .M_AXI_WDATA          ( M_AXI_WDATA       ) ,// to SLAVE 
-    .M_AXI_WSTRB          ( M_AXI_WSTRB       ) ,// to SLAVE
-    .M_AXI_WLAST          ( M_AXI_WLAST       ) ,// to SLAVE
-    .M_AXI_WVALID         ( M_AXI_WVALID      ) ,// to SLAVE
-    .M_AXI_WREADY         ( M_AXI_WREADY      ) ,// to SLAVE input
-
-    // Write response
-    .M_AXI_BRESP          ( M_AXI_BRESP       ) , // to SLAVE 
-    .M_AXI_BVALID         ( M_AXI_BVALID      ) , // to SLAVE
-    .M_AXI_BREADY         ( M_AXI_BREADY      ) , // to SLAVE
-
-    // Read address
-    .M_AXI_ARID           ( M_AXI_ARID        ) ,// to SLAVE 
-    .M_AXI_ARADDR         ( M_AXI_ARADDR      ) ,// to SLAVE
-    .M_AXI_ARLEN          ( M_AXI_ARLEN       ) ,// to SLAVE
-    .M_AXI_ARSIZE         ( M_AXI_ARSIZE      ) ,// to SLAVE
-    .M_AXI_ARBURST        ( M_AXI_ARBURST     ) ,// to SLAVE
-    .M_AXI_ARVALID        ( M_AXI_ARVALID     ) ,// to SLAVE
-    .M_AXI_ARREADY        ( M_AXI_ARREADY     ) ,// to SLAVE
-
-    // Read data
-    .M_AXI_RDATA          ( M_AXI_RDATA   ) , // slave // input
-		.M_AXI_RRESP          ( M_AXI_RRESP   ) , // slave
-    .M_AXI_RLAST          ( M_AXI_RLAST   ) , // slave
-    .M_AXI_RVALID         ( M_AXI_RVALID  ) , // slave
-    .M_AXI_RREADY         ( M_AXI_RREADY  ) , // slave
-
-    .start_read           ( start_read  ) , // from systolic 
-    .ifm_address_buffer   ( ADDRB       ) , // to IFM BRAM 
-    .wr_en_ifm_buffer     ( WR_EN       ) , // to IFM BRAM 
-		.start_CNN            (start_CNN    ) , //to systolic 
-    .ofm_size             (ofm_size     ) , // systolic
-    .ofm_size_pack        (ofm_size_pack) , // systolic
-		.num_filter           (num_filter   ) ,  // systolic 
-    .write                (ofm_write_en ) , // from systolic 
-		.end_read_ifm         ( end_read_ifm),
-		.done_layer           (done_compute_layer ),
-		.num_load_filter      ( num_load_filter),
-		.done                 (done_wr_layer) // to TOP module
-  );
-
-  // ================= IFM Cache =================
-	
-
-	//
-  DPRAM_IFM #(
-    .RAM_SIZE          ( 524172            ) ,
-    .BUFFER_ADDR_WIDTH ( BUFFER_ADDR_WIDTH ) ,
-    .BUFFER_DATA_WIDTH ( 128               ) ,
-    .DATA_WIDTH        ( DATA_WIDTH        ) ,
-    .INOUT_WIDTH       ( INOUT_WIDTH       ) ,
-    .SYSTOLIC_SIZE     ( 16                )
-) ifm_bram (
-   .clk           (M_AXI_ACLK  ) ,
-   .write_ofm_size(8           ) ,
-   .re_a          (ifm_read_en ) ,
-   .addr_a        (ifm_addr_a  ) ,
-   .dout_a        (ifm_data_in ) ,
-   .we_b          (WR_EN       ) ,
-   .addr_b        (ADDRB       ) ,
-   .din_b         (rdata       ) ,
-   .upsample_mode (0           ) ,
-   .ofm_size      (9'd16       )
 );
 
 endmodule

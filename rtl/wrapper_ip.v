@@ -1,13 +1,14 @@
+
 `timescale 1 ns / 1 ps
 
 	module SYSTOLIC_ARRAY_v1_0 #
 	(
+		// Users to add parameters here
 	  parameter SYSTOLIC_SIZE     = 16      ,
-	  parameter DATA_WIDTH        = 16      ,
+	  parameter DATA_WIDTH        = 128      ,
 	  parameter INOUT_WIDTH       = 256     ,
 	  parameter IFM_RAM_SIZE      = 524172  ,
-	//  parameter WGT_RAM_SIZE      = 8845488 ,
-	  parameter WGT_RAM_SIZE = 432,
+	  parameter WGT_RAM_SIZE      = 8845488 ,
 	  parameter OFM_RAM_SIZE_1    = 2205619 ,
     parameter OFM_RAM_SIZE_2    = 259584  ,
 	  parameter MAX_WGT_FIFO_SIZE = 4608    ,
@@ -16,13 +17,18 @@
     parameter NUM_LAYER         = 1       ,
 
     parameter ID_WIDTH          = 4 ,
-    parameter ADDR_WIDTH        = 32,
+    parameter ADDR_WIDTH        = 16,
     parameter LEN_WIDTH         = 8 ,
 
+		// User parameters ends
+		// Do not modify the parameters beyond this line
+
+
+		// Parameters of Axi Master Bus Interface M00_AXI
 		parameter  C_M00_AXI_TARGET_SLAVE_BASE_ADDR = 32'h40000000 ,
 		parameter integer C_M00_AXI_BURST_LEN       = 256          ,
 		parameter integer C_M00_AXI_ID_WIDTH        = 1            ,
-		parameter integer C_M00_AXI_ADDR_WIDTH      = 32           ,
+		parameter integer C_M00_AXI_ADDR_WIDTH      = 16           ,
 		parameter integer C_M00_AXI_DATA_WIDTH      = 128          ,
 		parameter integer C_M00_AXI_AWUSER_WIDTH    = 0            ,
 		parameter integer C_M00_AXI_ARUSER_WIDTH    = 0            ,
@@ -31,6 +37,13 @@
 		parameter integer C_M00_AXI_BUSER_WIDTH     = 0
 	)
 	(
+		// Users to add ports here
+
+		// User ports ends
+		// Do not modify the ports beyond this line
+
+
+		// Ports of Axi Master Bus Interface M00_AXI
 		input wire                                 m00_axi_init_axi_txn,
 		output wire                                m00_axi_txn_done,
 		output wire                                m00_axi_error,
@@ -78,15 +91,11 @@
 		input wire [C_M00_AXI_RUSER_WIDTH-1 : 0]   m00_axi_ruser,
 		input wire                                 m00_axi_rvalid,
 		output wire                                m00_axi_rready,
-
 		input wire                                 start,
-	  output wire                                done_wr_layer    ,	
-
-    output wire [ 8:0]                            ofm_size      , 
-    output wire                                   ofm_read_en   , 
-    output wire [ $clog2(OFM_RAM_SIZE_1) - 1 : 0] ofm_addr_read , 
-    output wire [ INOUT_WIDTH-1:0]                ofm_data_read  
-
+    input  wire [INOUT_WIDTH-1:0]              ifm_data_in ,
+    output wire [18 : 0]                       ifm_addr_a  ,
+    output wire                                ifm_read_en ,
+	  output wire                                done_CNN	
 	);
 // Instantiation of Axi Bus Interface M00_AXI
 	SYSTOLIC_ARRAY_v1_0_M00_AXI # ( 
@@ -163,10 +172,11 @@
 		.M_AXI_RUSER   ( m00_axi_ruser        ) ,
 		.M_AXI_RVALID  ( m00_axi_rvalid       ) ,
 		.M_AXI_RREADY  ( m00_axi_rready       ) ,
-
-		.start_read    ( start                ) ,
-		.done_wr_layer ( done_wr_layer        ) 
-
+		.start         ( start                ) ,
+    .ifm_data_in   ( ifm_data_in          ) ,
+    .ifm_addr_a    ( ifm_addr_a           ) ,
+    .ifm_read_en   ( ifm_read_en          ) ,
+		.done          ( done_CNN             )
 	);
 
 	// Add user logic here

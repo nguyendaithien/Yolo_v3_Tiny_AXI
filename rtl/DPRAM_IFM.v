@@ -24,7 +24,7 @@ module DPRAM_IFM #(
     input      [8 : 0]                    ofm_size
 );
 
-  (* ram_style = "ultra" *)  reg [DATA_WIDTH - 1 : 0] mem     [0 : RAM_SIZE      - 1] ;
+    reg [DATA_WIDTH - 1 : 0] mem     [0 : RAM_SIZE      - 1] ;
     wire [DATA_WIDTH - 1 : 0] data_in [0 : (SYSTOLIC_SIZE/2) - 1] ;
 
     integer i;
@@ -62,10 +62,18 @@ assign data_in[7] = din_b[0*DATA_WIDTH +: DATA_WIDTH];    // din_b[15:0]
         if (we_b) begin
             for (i = 0; i < SYSTOLIC_SIZE/2; i = i + 1) begin
                 if (i < write_ofm_size) begin
+                    if (upsample_mode) begin
+                        mem[addr_b + 2*i]                <= data_in[i];
+                        mem[addr_b + 2*i + 1]            <= data_in[i];
+                        mem[addr_b + ofm_size + 2*i]     <= data_in[i];
+                        mem[addr_b + ofm_size + 2*i + 1] <= data_in[i];
+                    end 
+                    else begin
                         mem[addr_b + i]                  <= data_in[i];
                     end
                 end
             end
+        end
     end
 
 endmodule

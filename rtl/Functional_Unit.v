@@ -5,8 +5,7 @@ module Functional_Unit #(
 	parameter DATA_WIDTH        = 16      ,
 	parameter INOUT_WIDTH       = 256     ,
 	parameter IFM_RAM_SIZE      = 524172  ,
-	// parameter WGT_RAM_SIZE      = 8845488 ,
-  parameter WGT_RAM_SIZE = 432,
+	parameter WGT_RAM_SIZE      = 8845488 ,
   parameter OFM_RAM_SIZE_1    = 2205619 ,  
   parameter OFM_RAM_SIZE_2    = 259584  , 
 	parameter MAX_WGT_FIFO_SIZE = 4608    ,
@@ -49,22 +48,12 @@ module Functional_Unit #(
   input  [13: 0]                          num_tiling	       ,
   output                                  ifm_read_en        ,   
   output [$clog2(IFM_RAM_SIZE)   - 1 : 0] ifm_addr_a         ,
-	input [INOUT_WIDTH - 1 : 0]             ifm_data_in        ,                                                 
-
-//  output wire  [ 8:0]                            write_ofm_size_1   ,
-//  output wire                                    ofm_read_en_1      ,
-//  wire         [ $clog2(OFM_RAM_SIZE_1) - 1 : 0] ofm_addr_a_1       ,
-//  output wire  [ INOUT_WIDTH-1:0]                ofm_data_in_1      ,
-  output wire                                    write_out_ofm_en_1, 
-//  output wire  [ $clog2(OFM_RAM_SIZE_1) - 1 : 0] ofm_addr_b_1       ,
-  output wire  [ INOUT_WIDTH-1:0]                ofm_data_out_1     
-
+	input [INOUT_WIDTH - 1 : 0] ifm_data_in                                                      
 );
 
 //	wire [INOUT_WIDTH - 1 : 0] ifm_data_in                                                        ;
-	wire [INOUT_WIDTH - 1 : 0] ofm_data_in_2                                       ;
-//	wire [INOUT_WIDTH - 1 : 0] ofm_data_in =  (count_layer == 12) ? ofm_data_in_2 : ofm_data_in_1 ;
-	wire [INOUT_WIDTH - 1 : 0] ofm_data_in =  (count_layer == 12) ? ofm_data_in_2 : ofm_data_in_2 ;
+	wire [INOUT_WIDTH - 1 : 0] ofm_data_in_1, ofm_data_in_2                                       ;
+	wire [INOUT_WIDTH - 1 : 0] ofm_data_in =  (count_layer == 12) ? ofm_data_in_2 : ofm_data_in_1 ;
   wire [INOUT_WIDTH - 1 : 0] wgt_data_in                                                        ;  
 	wire [INOUT_WIDTH - 1 : 0] input_data_in = (count_layer == 1) ? ifm_data_in   : ofm_data_in   ;
 
@@ -72,16 +61,17 @@ module Functional_Unit #(
 	wire [INOUT_WIDTH - 1 : 0] top_in  ;
 
 	wire         wgt_read_en                                                ;
-	wire         ofm_read_en_2                                              ;
-//	wire [INOUT_WIDTH - 1 : 0] ofm_data_in =  (count_layer == 12) ? ofm_data_in_2 : ofm_data_in_1 ;
+	wire         ofm_read_en_1, ofm_read_en_2                                              ;
 	wire [4 : 0] read_wgt_size                                                             ;
 	wire [4 : 0] read_ofm_size_1, read_ofm_size_2                                          ;
 	wire [4 : 0] read_ofm_size   = (count_layer == 12) ? read_ofm_size_2 : read_ofm_size_1 ;
 	wire [4 : 0] read_input_size = (count_layer == 1)  ? SYSTOLIC_SIZE   : read_ofm_size   ;
-	wire [4 : 0] write_ofm_size_2                                        ;
+	wire [4 : 0] write_ofm_size_1, write_ofm_size_2                                        ;
 	
 //	wire [$clog2(IFM_RAM_SIZE)   - 1 : 0] ifm_addr_a   ;	
 	wire [$clog2(WGT_RAM_SIZE)   - 1 : 0] wgt_addr_a   ;
+	wire [$clog2(OFM_RAM_SIZE_1) - 1 : 0] ofm_addr_a_1 ;
+	wire [$clog2(OFM_RAM_SIZE_1) - 1 : 0] ofm_addr_b_1 ;
 	wire [$clog2(OFM_RAM_SIZE_2) - 1 : 0] ofm_addr_a_2 ;
 	wire [$clog2(OFM_RAM_SIZE_2) - 1 : 0] ofm_addr_b_2 ;
 
@@ -118,7 +108,7 @@ module Functional_Unit #(
 
 	wire write_out_pe_en                                                                                       ;
 	wire write_out_maxpool_en                                                                                  ;
-	assign write_out_ofm_en_1 = (maxpool_mode)                          ? write_out_maxpool_en : write_out_pe_en ;
+	wire write_out_ofm_en_1 = (maxpool_mode)                          ? write_out_maxpool_en : write_out_pe_en ;
 	wire write_out_ofm_en_2 = (count_layer == 5 || count_layer == 11) ? write_out_pe_en      : 0               ;
 
 	wire [INOUT_WIDTH   - 1 : 0] pe_data_out        ;
@@ -163,7 +153,7 @@ module Functional_Unit #(
 	assign mult_fp_ofm_data_out_1[7  * DATA_WIDTH*2 +: DATA_WIDTH*2] = RELU_PARAM * data_out[7  * DATA_WIDTH +: DATA_WIDTH];
 	assign mult_fp_ofm_data_out_1[6  * DATA_WIDTH*2 +: DATA_WIDTH*2] = RELU_PARAM * data_out[6  * DATA_WIDTH +: DATA_WIDTH];
 	assign mult_fp_ofm_data_out_1[5  * DATA_WIDTH*2 +: DATA_WIDTH*2] = RELU_PARAM * data_out[5  * DATA_WIDTH +: DATA_WIDTH];
-	assign mult_fp_ofm_data_out_1[4  * DATA_WIDTH*2 +: DATA_WIDTH*2] = RELU_PARAM * data_out[4 * DATA_WIDTH +: DATA_WIDTH];
+	assign mult_fp_ofm_data_out_1[4  * DATA_WIDTH*2 +: DATA_WIDTH*2] = RELU_PARAM * data_out[4  * DATA_WIDTH +: DATA_WIDTH];
 	assign mult_fp_ofm_data_out_1[3  * DATA_WIDTH*2 +: DATA_WIDTH*2] = RELU_PARAM * data_out[3  * DATA_WIDTH +: DATA_WIDTH];
 	assign mult_fp_ofm_data_out_1[2  * DATA_WIDTH*2 +: DATA_WIDTH*2] = RELU_PARAM * data_out[2  * DATA_WIDTH +: DATA_WIDTH];
 	assign mult_fp_ofm_data_out_1[1  * DATA_WIDTH*2 +: DATA_WIDTH*2] = RELU_PARAM * data_out[1  * DATA_WIDTH +: DATA_WIDTH];
@@ -187,7 +177,7 @@ module Functional_Unit #(
 	assign ofm_data_out_1_leaky[1  * DATA_WIDTH +: DATA_WIDTH] = mult_fp_ofm_data_out_1[1  * DATA_WIDTH*2 + Q +: DATA_WIDTH];
 	assign ofm_data_out_1_leaky[0  * DATA_WIDTH +: DATA_WIDTH] = mult_fp_ofm_data_out_1[0  * DATA_WIDTH*2 + Q +: DATA_WIDTH];
 
-//	wire [INOUT_WIDTH - 1 : 0] ofm_data_out_2;
+	wire [INOUT_WIDTH - 1 : 0] ofm_data_out_1;
 	assign ofm_data_out_1[15 * DATA_WIDTH +: DATA_WIDTH] = (data_out[16 * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[15 * DATA_WIDTH +: DATA_WIDTH] : data_out[15 * DATA_WIDTH +: DATA_WIDTH] ;
 	assign ofm_data_out_1[14 * DATA_WIDTH +: DATA_WIDTH] = (data_out[15 * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[14 * DATA_WIDTH +: DATA_WIDTH] : data_out[14 * DATA_WIDTH +: DATA_WIDTH] ;
 	assign ofm_data_out_1[13 * DATA_WIDTH +: DATA_WIDTH] = (data_out[14 * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[13 * DATA_WIDTH +: DATA_WIDTH] : data_out[13 * DATA_WIDTH +: DATA_WIDTH] ;
@@ -196,14 +186,14 @@ module Functional_Unit #(
 	assign ofm_data_out_1[10 * DATA_WIDTH +: DATA_WIDTH] = (data_out[11 * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[10 * DATA_WIDTH +: DATA_WIDTH] : data_out[10 * DATA_WIDTH +: DATA_WIDTH] ;
 	assign ofm_data_out_1[9  * DATA_WIDTH +: DATA_WIDTH] = (data_out[10 * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[9  * DATA_WIDTH +: DATA_WIDTH] : data_out[9  * DATA_WIDTH +: DATA_WIDTH] ;
 	assign ofm_data_out_1[8  * DATA_WIDTH +: DATA_WIDTH] = (data_out[9  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[8  * DATA_WIDTH +: DATA_WIDTH] : data_out[8  * DATA_WIDTH +: DATA_WIDTH] ;
-	assign ofm_data_out_1[0  * DATA_WIDTH +: DATA_WIDTH] = (data_out[8  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[7  * DATA_WIDTH +: DATA_WIDTH] : data_out[7  * DATA_WIDTH +: DATA_WIDTH] ;
-	assign ofm_data_out_1[1  * DATA_WIDTH +: DATA_WIDTH] = (data_out[7  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[6  * DATA_WIDTH +: DATA_WIDTH] : data_out[6  * DATA_WIDTH +: DATA_WIDTH] ;
-	assign ofm_data_out_1[2  * DATA_WIDTH +: DATA_WIDTH] = (data_out[6  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[5  * DATA_WIDTH +: DATA_WIDTH] : data_out[5  * DATA_WIDTH +: DATA_WIDTH] ;
-	assign ofm_data_out_1[3  * DATA_WIDTH +: DATA_WIDTH] = (data_out[5  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[4  * DATA_WIDTH +: DATA_WIDTH] : data_out[4  * DATA_WIDTH +: DATA_WIDTH] ;
-	assign ofm_data_out_1[4  * DATA_WIDTH +: DATA_WIDTH] = (data_out[4  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[3  * DATA_WIDTH +: DATA_WIDTH] : data_out[3  * DATA_WIDTH +: DATA_WIDTH] ;
-	assign ofm_data_out_1[5  * DATA_WIDTH +: DATA_WIDTH] = (data_out[3  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[2  * DATA_WIDTH +: DATA_WIDTH] : data_out[2  * DATA_WIDTH +: DATA_WIDTH] ;
-	assign ofm_data_out_1[6  * DATA_WIDTH +: DATA_WIDTH] = (data_out[2  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[1  * DATA_WIDTH +: DATA_WIDTH] : data_out[1  * DATA_WIDTH +: DATA_WIDTH] ;
-	assign ofm_data_out_1[7  * DATA_WIDTH +: DATA_WIDTH] = (data_out[1  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[0  * DATA_WIDTH +: DATA_WIDTH] : data_out[0  * DATA_WIDTH +: DATA_WIDTH] ;
+	assign ofm_data_out_1[7  * DATA_WIDTH +: DATA_WIDTH] = (data_out[8  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[7  * DATA_WIDTH +: DATA_WIDTH] : data_out[7  * DATA_WIDTH +: DATA_WIDTH] ;
+	assign ofm_data_out_1[6  * DATA_WIDTH +: DATA_WIDTH] = (data_out[7  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[6  * DATA_WIDTH +: DATA_WIDTH] : data_out[6  * DATA_WIDTH +: DATA_WIDTH] ;
+	assign ofm_data_out_1[5  * DATA_WIDTH +: DATA_WIDTH] = (data_out[6  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[5  * DATA_WIDTH +: DATA_WIDTH] : data_out[5  * DATA_WIDTH +: DATA_WIDTH] ;
+	assign ofm_data_out_1[4  * DATA_WIDTH +: DATA_WIDTH] = (data_out[5  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[4  * DATA_WIDTH +: DATA_WIDTH] : data_out[4  * DATA_WIDTH +: DATA_WIDTH] ;
+	assign ofm_data_out_1[3  * DATA_WIDTH +: DATA_WIDTH] = (data_out[4  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[3  * DATA_WIDTH +: DATA_WIDTH] : data_out[3  * DATA_WIDTH +: DATA_WIDTH] ;
+	assign ofm_data_out_1[2  * DATA_WIDTH +: DATA_WIDTH] = (data_out[3  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[2  * DATA_WIDTH +: DATA_WIDTH] : data_out[2  * DATA_WIDTH +: DATA_WIDTH] ;
+	assign ofm_data_out_1[1  * DATA_WIDTH +: DATA_WIDTH] = (data_out[2  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[1  * DATA_WIDTH +: DATA_WIDTH] : data_out[1  * DATA_WIDTH +: DATA_WIDTH] ;
+	assign ofm_data_out_1[0  * DATA_WIDTH +: DATA_WIDTH] = (data_out[1  * DATA_WIDTH - 1] == 1 && count_layer != 10 && count_layer != 13) ? ofm_data_out_1_leaky[0  * DATA_WIDTH +: DATA_WIDTH] : data_out[0  * DATA_WIDTH +: DATA_WIDTH] ;
 
 	//Leaky relu
 	 (* use_dsp = "yes" *) wire [INOUT_WIDTH*2 - 1 : 0] mult_fp_ofm_data_out_2;
@@ -293,35 +283,35 @@ DPRAM #(.RAM_SIZE (WGT_RAM_SIZE), .DATA_WIDTH (DATA_WIDTH), .INOUT_WIDTH (INOUT_
 	.ofm_size       (             )
 );
 
-//DPRAM #(.RAM_SIZE (OFM_RAM_SIZE_1), .DATA_WIDTH (DATA_WIDTH), .INOUT_WIDTH (INOUT_WIDTH), .SYSTOLIC_SIZE (SYSTOLIC_SIZE)) ofm_dpram_1 (
-//	.clk            ( clk                ) ,
-//	.write_ofm_size ( write_ofm_size_1   ) ,
-//	.re_a           ( ofm_read_en_1      ) ,
-//	.addr_a         ( ofm_addr_a_1       ) ,
-//	.dout_a         ( ofm_data_in_1      ) ,
-//	.we_b           ( write_out_ofm_en_1 ) ,
-//	.addr_b         ( ofm_addr_b_1       ) ,
-//	.din_b          ( ofm_data_out_1     ) ,
-//
-//	.upsample_mode  ( upsample_mode      ) , 
-//	.ofm_size       ( ofm_size           )   
-//);
+DPRAM #(.RAM_SIZE (OFM_RAM_SIZE_1), .DATA_WIDTH (DATA_WIDTH), .INOUT_WIDTH (INOUT_WIDTH), .SYSTOLIC_SIZE (SYSTOLIC_SIZE)) ofm_dpram_1 (
+	.clk            ( clk                ) ,
+	.write_ofm_size ( write_ofm_size_1   ) ,
+	.re_a           ( ofm_read_en_1      ) ,
+	.addr_a         ( ofm_addr_a_1       ) ,
+	.dout_a         ( ofm_data_in_1      ) ,
+	.we_b           ( write_out_ofm_en_1 ) ,
+	.addr_b         ( ofm_addr_b_1       ) ,
+	.din_b          ( ofm_data_out_1     ) ,
 
-//DPRAM #(.RAM_SIZE (OFM_RAM_SIZE_2), .DATA_WIDTH (DATA_WIDTH), .INOUT_WIDTH (INOUT_WIDTH), .SYSTOLIC_SIZE (SYSTOLIC_SIZE)) ofm_dpram_2 (
-//	.clk            ( clk                ) ,
-//	.write_ofm_size ( write_ofm_size_2   ) ,
+	.upsample_mode  ( upsample_mode      ) , 
+	.ofm_size       ( ofm_size           )   
+);
 
-//	.re_a           ( ofm_read_en_2      ) ,
-//	.addr_a         ( ofm_addr_a_2       ) ,
-//	.dout_a         ( ofm_data_in_2      ) ,
+DPRAM #(.RAM_SIZE (OFM_RAM_SIZE_2), .DATA_WIDTH (DATA_WIDTH), .INOUT_WIDTH (INOUT_WIDTH), .SYSTOLIC_SIZE (SYSTOLIC_SIZE)) ofm_dpram_2 (
+	.clk            ( clk                ) ,
+	.write_ofm_size ( write_ofm_size_2   ) ,
 
-//	.we_b           ( write_out_ofm_en_2 ) ,
-//	.addr_b         ( ofm_addr_b_2       ) ,
-//	.din_b          ( ofm_data_out_2     ) ,
+	.re_a           ( ofm_read_en_2      ) ,
+	.addr_a         ( ofm_addr_a_2       ) ,
+	.dout_a         ( ofm_data_in_2      ) ,
 
-//	.upsample_mode  ( upsample_mode      ) , 
-//	.ofm_size       ( ofm_size_ofm_ram_2 )  
-//);
+	.we_b           ( write_out_ofm_en_2 ) ,
+	.addr_b         ( ofm_addr_b_2       ) ,
+	.din_b          ( ofm_data_out_2     ) ,
+
+	.upsample_mode  ( upsample_mode      ) , 
+	.ofm_size       ( ofm_size_ofm_ram_2 )  
+);
 
 ifm_addr_controller #(.SYSTOLIC_SIZE (SYSTOLIC_SIZE), .IFM_RAM_SIZE (IFM_RAM_SIZE)) ifm_addr (
 	.clk          ( clk              ) ,
