@@ -1,4 +1,4 @@
-# Yolo_v3_Tiny_AXI
+# FPGA-based CNN Accelerator
 Author:  **Nguyen Van Luu** - nluu1784@gmail.com
 **Nguyen Thi Thuy Linh** - thuylinh041203@gmail.com
 
