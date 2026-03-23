@@ -30,6 +30,8 @@ achieves an inference speed of 15.88 FPS and a throughput of
 # ARCHITECTURE OF SYSTEM
 * In this design, a 16×16 systolic array is proposed with a multi-level pipeline across load, compute, and write-back stages. In particular, a dual-lane data path is employed to hide memory access latency and enhance throughput. The design also integrates an AXI interface to communicate with off-chip memory; a DRAM model with an AXI interface is used for simulation. Overall, the architecture includes IFM/OFM caches for data preloading, IFM/weight ping-pong buffers located near the systolic array, as well as activation function and max-pooling blocks.
 ![YOLO Tiny Architecture](images/Overall_1.png)
+# Systolic array and data tiling strategy
+
 
 # Simulation
 * To perform simulation, we prepare a file named wgt.txt that contains all weights of the CONV1 layer in YOLOv3-tiny.
