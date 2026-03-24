@@ -14,7 +14,7 @@ Author:  **Nguyen Van Luu** - nluu1784@gmail.com
   Tools: **Cadence Xcelium, Vivado**
 
   ## *<span style="font-size: 24px;">Status:</span>*  
-**Data generation script, detailed architecture and pipeline strategy will be soon updated**
+Data generation script, detailed architecture and pipeline strategy will be soon updated
 
 
 
