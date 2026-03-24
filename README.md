@@ -34,6 +34,8 @@ Data generation script, detailed architecture and pipeline strategy will be soon
 * For example, with a kernel size of 3, padding of 1, and 3 input channels, each tile produces output feature maps of size 3 × 16 × 16. After max-pooling, the output size becomes 3 × 8 × 8.
 ![YOLO Tiny Architecture](images/Tiling_strategy.png)
 
+![YOLO Tiny Architecture](images/timing.png)
+
 # Simulation
 * To perform simulation, we prepare a file named wgt.txt that contains all weights of the CONV1 layer in YOLOv3-tiny.
 * The input feature maps are generated using Python. Both datasets are calculated using a reference model implemented in the PyTorch framework. The script for this process is not included here.
