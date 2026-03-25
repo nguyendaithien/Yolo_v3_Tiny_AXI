@@ -20,10 +20,10 @@ Data generation script, detailed architecture and pipeline strategy will be soon
 
 # Introduction 
 * Systolic arrays are widely used in deep neural network accelerators due to their regular dataflow and high parallelism. Modern CNNs introduce multi-scale feature maps and varying layer dimensions, which can lead to resource underutilization due to bubble cycles. In this project, a 16×16 systolic array architecture is presented to accelerate CNN workloads.
-* Input feature maps (IFMs) are streamed across the array, while weights are loaded in a structured manner. Partial sums are accumulated within each processing element (PE) until final output feature maps (OFMs) are generated and stored. Both IFMs and weights use 16-bit precision, and OFMs are also quantized to 16 bits.
-* An AXI interface is integrated to enable communication with off-chip memory, supporting a 256-bit data width and burst lengths of up to 256 beats.
-* An efficient dataflow mapping strategy and a multi-stage pipeline are applied to hide off-chip memory latency and improve throughput. IFMs of size Cin×18×18 are first loaded into on-chip cache and then fed into a double-buffer structure. Weights are loaded sequentially; for example, 64 input channels require four loading iterations with 16 filters each time.
-* The architecture supports convolution and max-pooling operations, flexible kernel sizes, and various IFM shapes. Currently, stride = 1 and padding = 1 are supported, with future extensions planned.
+* Dataflow: Input feature maps (IFMs) are streamed across the array, while weights are loaded in a structured manner. Partial sums are accumulated within each processing element (PE) until final output feature maps (OFMs) are generated and stored. Both IFMs and weights use 16-bit precision, and OFMs are also quantized to 16 bits.
+* Interface: An AXI interface is integrated to enable communication with off-chip memory, supporting a 256-bit data width and burst lengths of up to 256 beats.
+* Optimization: An efficient dataflow mapping strategy and a multi-stage pipeline are applied to hide off-chip memory latency and improve throughput. IFMs of size Cin×18×18 are first loaded into on-chip cache and then fed into a double-buffer structure. Weights are loaded sequentially; for example, 64 input channels require four loading iterations with 16 filters each time.
+* Flexibility: The architecture supports convolution and max-pooling operations, flexible kernel sizes, and various IFM shapes. Currently, stride = 1 and padding = 1 are supported, with future extensions planned.
 
 
 # ARCHITECTURE OF SYSTEM
